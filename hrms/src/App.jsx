@@ -77,8 +77,7 @@ function App() {
             p:3,
             mt: user ? 12 : 0,
             ml: user ? 2 : 0,
-            minWidth: 0,
-           
+            minWidth: 0,   
             height:"100vh"
           }}
         >
@@ -86,7 +85,7 @@ function App() {
             <Routes>
               <Route
                 path="/login"
-                element={user ? <Navigate to="/" /> : <Login login={login} />}
+                element={user ? <Navigate to="/login" /> : <Login login={login} />}
               />
               <Route
                 path="/"
