@@ -25,6 +25,8 @@ import SendIcon from "@mui/icons-material/Send";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import HistoryIcon from "@mui/icons-material/History";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import StarIcon from "@mui/icons-material/Star";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import PersonIcon from "@mui/icons-material/Person";
@@ -102,7 +104,10 @@ function Sidebar() {
     {
       name: "Payroll Management",
       icon: <AttachMoneyIcon />,
-      link: "/payroll-records" 
+      submenus: [
+        { name: "Payroll Records", icon: <ReceiptIcon />, link: "/payroll-records" },
+        { name: "Payroll Reports", icon: <BarChartIcon />, link: "/payroll-reports" },
+      ],
     },
     {
       name: "Performance Management",
@@ -118,6 +123,7 @@ function Sidebar() {
       submenus: [
         { name: "Employee Reports", icon: <PeopleIcon />, link: "/employee-reports" },
         { name: "Leave Reports", icon: <EventNoteIcon />, link: "/leave-reports" },
+        { name: "Payroll Reports", icon: <AttachMoneyIcon />, link: "/payroll-reports" },
         { name: "Performance Reports", icon: <AssessmentIcon />, link: "/performance-reports" },
       ],
     },

@@ -15,6 +15,8 @@ import LeaveRequest from "./pages/leave/LeaveRequest";
 import LeaveApproval from "./pages/leave/LeaveApproval";
 import LeaveHistory from "./pages/leave/LeaveHistory";
 import PayrollDashboard from "./pages/payroll/PayrollDashboard";
+import PayrollRecords from "./pages/payroll/PayrollRecords";
+import PayrollReport from "./pages/payroll/PayrollReport";
 import PerformanceReview from "./pages/performance/PerformanceReview";
 import PerformanceAnalytics from "./pages/performance/PerformanceAnalytics";
 import EmployeeReports from "./pages/reports/EmployeeReports";
@@ -28,7 +30,6 @@ import Documentation from "./pages/help/Documentation";
 import NotificationCenter from "./pages/notification/NotificationCenter";
 import ErrorPage from "./pages/error/ErrorPage";
 import MaintenancePage from "./pages/maintenance/MaintenancePage";
-import PayrollManagement from "./pages/payroll/PayrollManagement";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -130,7 +131,11 @@ function App() {
               />
               <Route
                 path="/payroll-records"
-                element={user ? <PayrollManagement /> : <Navigate to="/login" />}
+                element={user ? <PayrollRecords /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/payroll-reports"
+                element={user ? <PayrollReport /> : <Navigate to="/login" />}
               />
               <Route
                 path="/performance-review"
