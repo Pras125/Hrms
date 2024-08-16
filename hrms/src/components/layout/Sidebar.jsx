@@ -94,11 +94,17 @@ function Sidebar() {
         { name: "Leave History", icon: <HistoryIcon />, link: "/leave-history" },
       ],
     },
+    {    
+        name: "Payroll Dashboard", 
+        icon: <DashboardCustomizeIcon />,
+        link: "/payroll-dashboard" 
+
+    
+    },
     {
       name: "Payroll Management",
       icon: <AttachMoneyIcon />,
       submenus: [
-        { name: "Payroll Dashboard", icon: <DashboardCustomizeIcon />, link: "/payroll-dashboard" },
         { name: "Payroll Records", icon: <ReceiptIcon />, link: "/payroll-records" },
         { name: "Payroll Reports", icon: <BarChartIcon />, link: "/payroll-reports" },
       ],

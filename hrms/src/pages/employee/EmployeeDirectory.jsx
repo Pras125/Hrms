@@ -19,7 +19,6 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
@@ -315,6 +314,8 @@ export default function EnhancedTable() {
   const [employeeData, setEmployeeData] = React.useState(rows);
   const [editingId, setEditingId] = React.useState(null);
   const [editedEmployee, setEditedEmployee] = React.useState({});
+  const [editingCell, setEditingCell] = React.useState({ id: null, field: null });
+  const [editedValue, setEditedValue] = React.useState('');
   const [dense, setDense] = React.useState(true);
 
   const handleRequestSort = (event, property) => {
@@ -371,31 +372,33 @@ export default function EnhancedTable() {
     setEmployeeData([...employeeData, { ...newEmployee, Id: newId }]);
   };
 
-  const handleEditEmployee = (id) => {
-    setEditingId(id);
-    setEditedEmployee(employeeData.find(employee => employee.Id === id));
-  };
 
+  const handleEditCell = (id, field, value) => {
+    setEditingCell({ id, field });
+    setEditedValue(value);
+  };
+  
   const handleSaveEdit = () => {
     setEmployeeData(employeeData.map(employee => 
-      employee.Id === editingId ? { ...employee, ...editedEmployee } : employee
+      employee.Id === editingCell.id 
+        ? { ...employee, [editingCell.field]: editedValue } 
+        : employee
     ));
-    setEditingId(null);
-    setEditedEmployee({});
+    setEditingCell({ id: null, field: null });
+    setEditedValue('');
+  };
+  
+  const handleCancelEdit = () => {
+    setEditingCell({ id: null, field: null });
+    setEditedValue('');
   };
 
-  const handleCancelEdit = () => {
-    setEditingId(null);
-    setEditedEmployee({});
-  };
 
   const handleEditChange = (event) => {
-    setEditedEmployee({ ...editedEmployee, [event.target.name]: event.target.value });
+    setEditedValue(event.target.value);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
+
 
   const handleDeleteEmployee = (id) => {
     setEmployeeData(employeeData.filter(employee => employee.Id !== id));
@@ -404,6 +407,10 @@ export default function EnhancedTable() {
   const handleDeleteSelected = () => {
     setEmployeeData(employeeData.filter(employee => !selected.includes(employee.Id)));
     setSelected([]);
+  };
+
+  const handleChangeDense = (event) => {
+    setDense(event.target.checked);
   };
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
@@ -469,34 +476,89 @@ export default function EnhancedTable() {
                       '&:nth-of-type(even)': { backgroundColor: '#ffffff' },
                     }}
                   >
-                    <TableCell padding="checkbox" sx={{ padding: '0 8px' }}>
+                    <TableCell padding="checkbox" sx={{ padding: '0 4px' }}>
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{
                           'aria-labelledby': labelId,
                         }}
+                        size="small"
                       />
                     </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      sx={{ fontSize: '0.8rem', padding: '8px' }}
-                    >
+                    <TableCell component="th" id={labelId} scope="row" sx={{ padding: '4px', fontSize: '0.8rem' }}>
                       {row.Id}
                     </TableCell>
-                    <TableCell align="left" sx={{ fontSize: '0.8rem', padding: '8px' }}>{row.Name}</TableCell>
-                    <TableCell align="left" sx={{ fontSize: '0.8rem', padding: '8px' }}>{row.Department}</TableCell>
-                    <TableCell align="left" sx={{ fontSize: '0.8rem', padding: '8px' }}>{row.Positions}</TableCell>
-                    <TableCell align="left" sx={{ fontSize: '0.8rem', padding: '8px' }}>{row.Email}</TableCell>
-                    <TableCell align="left" sx={{ fontSize: '0.8rem', padding: '8px' }}>
-                      <IconButton onClick={() => handleEditEmployee(row.Id)} size="small">
-                        <EditIcon fontSize="small" />
-                      </IconButton>
-                      <IconButton onClick={() => handleDeleteEmployee(row.Id)} size="small">
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
+                    <TableCell align="left" sx={{ padding: '4px', fontSize: '0.8rem' }}>
+                      {isEditing ? (
+                        <TextField
+                          name="Name"
+                          value={editedEmployee.Name || row.Name}
+                          onChange={handleEditChange}
+                          variant="standard"
+                          size="small"
+                        />
+                      ) : row.Name}
+                    </TableCell>
+                    <TableCell align="left" sx={{ padding: '4px', fontSize: '0.8rem' }}>
+                      {isEditing ? (
+                        <TextField
+                          name="Department"
+                          value={editedEmployee.Department || row.Department}
+                          onChange={handleEditChange}
+                          variant="standard"
+                          size="small"
+                        />
+                      ) : row.Department}
+                    </TableCell>
+                    <TableCell align="left" sx={{ padding: '4px', fontSize: '0.8rem' }}>
+                      {isEditing ? (
+                        <TextField
+                          name="Positions"
+                          value={editedEmployee.Positions || row.Positions}
+                          onChange={handleEditChange}
+                          variant="standard"
+                          size="small"
+                        />
+                      ) : row.Positions}
+                    </TableCell>
+                    <TableCell align="left" sx={{ padding: '4px', fontSize: '0.8rem' }}>
+                      {isEditing ? (
+                        <TextField
+                          name="Email"
+                          value={editedEmployee.Email || row.Email}
+                          onChange={handleEditChange}
+                          variant="standard"
+                          size="small"
+                        />
+                      ) : row.Email}
+                    </TableCell>
+                    <TableCell align="left" sx={{ padding: '4px', fontSize: '0.8rem' }}>
+                      {isEditing ? (
+                        <>
+                          <IconButton onClick={handleSaveEdit} size="small">
+                            <SaveIcon fontSize="small" />
+                          </IconButton>
+                          <IconButton onClick={handleCancelEdit} size="small">
+                            <CancelIcon fontSize="small" />
+                          </IconButton>
+                        </>
+                      ) : (
+                        <>
+                          <IconButton onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditEmployee(row.Id);
+                          }} size="small">
+                            <EditIcon fontSize="small" />
+                          </IconButton>
+                          <IconButton onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteEmployee(row.Id);
+                          }} size="small">
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </>
+                      )}
                     </TableCell>
                   </TableRow>
                 );
@@ -514,7 +576,7 @@ export default function EnhancedTable() {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[15, 30, 50]}
+          rowsPerPageOptions={[10, 30, 50]}
           component="div"
           count={filteredRows.length}
           rowsPerPage={rowsPerPage}
