@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Box, createTheme, styled, ThemeProvider } from "@mui/material";
 import Navbar from "./components/layout/Navbar";
 import Sidebar from "./components/layout/Sidebar";
@@ -30,26 +30,23 @@ import ErrorPage from "./pages/error/ErrorPage";
 import MaintenancePage from "./pages/maintenance/MaintenancePage";
 import PayrollManagement from "./pages/payroll/PayrollManagement";
 
-
-// import { onAuthStateChanged } from 'firebase/auth';
-
 function App() {
   const [user, setUser] = useState(null);
   const [darkTheme, setDarkTheme] = useState(false);
+  const location = useLocation();
 
   const theme = createTheme({
     palette: {
       mode: darkTheme ? "dark" : "light",
     },
-    
   });
 
   const MyBox = styled(Box)({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    
   });
+
   const toggleTheme = () => {
     setDarkTheme(!darkTheme);
   };
@@ -62,11 +59,13 @@ function App() {
     setUser(null);
   };
 
+  const isAuthPage = ['/login', '/register', '/password-reset', '/password-reset-confirmation'].includes(location.pathname);
+
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: "flex" }}>
-        {user && <Navbar logout={logout} />}
-        {user && (
+        {user && !isAuthPage && <Navbar logout={logout} />}
+        {user && !isAuthPage && (
           <Sidebar darktheme={{ dark: darkTheme }} toggleTheme={toggleTheme} />
         )}
 
@@ -74,12 +73,11 @@ function App() {
           component="main"
           sx={{
             flexGrow: 1,
-            p:3,
-            mt: user ? 12 : 0,
-            ml: user ? 2 : 0,
+            p: 3,
+            mt: user && !isAuthPage ? 12 : 0,
+            ml: user && !isAuthPage ? 2 : 0,
             minWidth: 0,
-           
-            height:"100vh"
+            height: "100vh"
           }}
         >
           <MyBox>
@@ -165,7 +163,7 @@ function App() {
                 }
               />
               <Route
-                path="user-settings"
+                path="/user-settings"
                 element={user ? <UserSettings /> : <Navigate to="/login" />}
               />
               <Route
@@ -188,6 +186,7 @@ function App() {
               />
               <Route path="/error" element={<ErrorPage />} />
               <Route path="/maintenance" element={<MaintenancePage />} />
+              <Route path="*" element={<Navigate to="/error" />} />
             </Routes>
           </MyBox>
         </Box>
