@@ -20,3 +20,18 @@ const analytics = getAnalytics(app);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export default app;
+// adding the department 
+async function addDepartment(name, id) {
+  try {
+    const docRef = await addDoc(collection(db, "departments"), {
+      name: name,
+      id: id
+    });
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
+
+// Example usage
+addDepartment("Human Resources", "hr01");
