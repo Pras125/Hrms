@@ -61,7 +61,7 @@ const EmployeeManagement = () => {
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [filterStatus, setFilterStatus] = useState('all');
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(30);
   const [selected, setSelected] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -126,6 +126,9 @@ const EmployeeManagement = () => {
   };
 
   const handleClick = (event, id) => {
+    if (event.target.closest('.MuiIconButton-root')) {
+      return;
+    }
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
@@ -223,7 +226,6 @@ const EmployeeManagement = () => {
                   return (
                     <StyledTableRow
                       hover
-                      onClick={(event) => handleClick(event, employee.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -231,7 +233,10 @@ const EmployeeManagement = () => {
                       selected={isItemSelected}
                     >
                       <StyledTableCell padding="checkbox">
-                        <Checkbox checked={isItemSelected} />
+                        <Checkbox 
+                          checked={isItemSelected} 
+                          onClick={(event) => handleClick(event, employee.id)}
+                        />
                       </StyledTableCell>
                       <StyledTableCell>{employee.userID}</StyledTableCell>
                       <StyledTableCell>{employee.department}</StyledTableCell>
@@ -257,7 +262,7 @@ const EmployeeManagement = () => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10, 30, 50]}
           component="div"
           count={filteredEmployees.length}
           rowsPerPage={rowsPerPage}
@@ -336,3 +341,5 @@ const EmployeeManagement = () => {
 };
 
 export default EmployeeManagement;
+
+
