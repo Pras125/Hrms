@@ -10,6 +10,9 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import LeaveApprovedEmail from './LeaveApprovedEmail';
+import LeaveRejectedEmail from './LeaveRejectedEmail';
+import LeaveStatusUpdatedEmail from './LeaveStatusUpdatedEmail';
 
 function NotificationCenter() {
   const notifications = [
