@@ -1,31 +1,33 @@
 import React from 'react';
-import {
-  Typography,
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  IconButton,
-} from '@mui/material';
+import { Typography, Box, List, ListItem, ListItemText, ListItemIcon, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import LeaveApprovedEmail from './LeaveApprovedEmail';
+import LeaveRejectedEmail from './LeaveRejectedEmail';
+import LeaveStatusUpdatedEmail from './LeaveStatusUpdatedEmail';
 
 function NotificationCenter() {
   const notifications = [
     {
       id: 1,
-      message: 'Your leave request has been approved',
+      type: 'approved',
+      employeeName: 'John Doe',
+      leaveDates: 'August 20 - August 25',
       date: '2023-07-01',
     },
     {
       id: 2,
-      message: 'New performance review is due by end of the week',
+      type: 'rejected',
+      employeeName: 'Jane Smith',
+      leaveDates: 'September 1 - September 5',
       date: '2023-07-02',
     },
     {
       id: 3,
-      message: 'Payroll for June has been processed',
+      type: 'updated',
+      employeeName: 'Alex Johnson',
+      leaveDates: 'October 10 - October 15',
+      newStatus: 'Approved',
       date: '2023-07-03',
     },
   ];
@@ -33,6 +35,35 @@ function NotificationCenter() {
   const handleDelete = (id) => {
     console.log(`Delete notification with id: ${id}`);
     // Implement delete notification logic here
+  };
+
+  const renderNotificationContent = (notification) => {
+    switch (notification.type) {
+      case 'approved':
+        return (
+          <LeaveApprovedEmail
+            employeeName={notification.employeeName}
+            leaveDates={notification.leaveDates}
+          />
+        );
+      case 'rejected':
+        return (
+          <LeaveRejectedEmail
+            employeeName={notification.employeeName}
+            leaveDates={notification.leaveDates}
+          />
+        );
+      case 'updated':
+        return (
+          <LeaveStatusUpdatedEmail
+            employeeName={notification.employeeName}
+            leaveDates={notification.leaveDates}
+            newStatus={notification.newStatus}
+          />
+        );
+      default:
+        return <Typography variant="body1">Unknown Notification Type</Typography>;
+    }
   };
 
   return (
@@ -58,7 +89,7 @@ function NotificationCenter() {
               <NotificationsIcon />
             </ListItemIcon>
             <ListItemText
-              primary={notification.message}
+              primary={renderNotificationContent(notification)}
               secondary={notification.date}
             />
           </ListItem>
