@@ -1,5 +1,6 @@
 import React from 'react';
 import Dashboard from '../../components/common/Dashboard';
+import { auth } from './firebaseConfig';
 
 function MainDashboard() {
   const dashboardItems = [
