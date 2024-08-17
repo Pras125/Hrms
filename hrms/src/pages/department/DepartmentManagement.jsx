@@ -143,7 +143,7 @@ const DepartmentManagement = () => {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Department Management
+            Department Records
           </Typography>
           <TextField
             variant="outlined"
